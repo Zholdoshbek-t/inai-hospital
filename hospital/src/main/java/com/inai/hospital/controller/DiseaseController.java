@@ -1,5 +1,6 @@
 package com.inai.hospital.controller;
 
+import com.inai.hospital.config.rabbitmq.producers.RabbitMQDiseaseProducer;
 import com.inai.hospital.dto.Request;
 import com.inai.hospital.dto.Response;
 import com.inai.hospital.service.DiseaseService;
@@ -14,6 +15,7 @@ public class DiseaseController {
 
     private final DiseaseService diseaseService;
 
+    private final RabbitMQDiseaseProducer rabbitMQDiseaseProducer;
 
     @GetMapping("/get")
     public ResponseEntity<Response> getDiseases() {
@@ -21,22 +23,28 @@ public class DiseaseController {
     }
 
     @GetMapping("/get-by-text")
-    public ResponseEntity<Response>  getDiseasesByText(@RequestBody Request request) {
+    public ResponseEntity<Response> getDiseasesByText(@RequestBody Request request) {
         return ResponseEntity.ok(diseaseService.getDiseasesByText(request));
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Response>  createDisease(@RequestBody Request request) {
-        return ResponseEntity.ok(diseaseService.createDisease(request));
+    public ResponseEntity<String> createDisease(@RequestBody Request request) {
+        rabbitMQDiseaseProducer.sendMessage(request);
+
+        return ResponseEntity.ok("Запрос был успешно отправлен. Ожидайте.");
     }
 
     @PostMapping("/update")
-    public ResponseEntity<Response>  updateDisease(@RequestBody Request request) {
-        return ResponseEntity.ok(diseaseService.updateDisease(request));
+    public ResponseEntity<String> updateDisease(@RequestBody Request request) {
+        rabbitMQDiseaseProducer.sendMessage(request);
+
+        return ResponseEntity.ok("Запрос был успешно отправлен. Ожидайте.");
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<Response>  deleteDisease(@RequestBody Request request) {
-        return ResponseEntity.ok(diseaseService.deleteDisease(request));
+    public ResponseEntity<String> deleteDisease(@RequestBody Request request) {
+        rabbitMQDiseaseProducer.sendMessage(request);
+
+        return ResponseEntity.ok("Запрос был успешно отправлен. Ожидайте.");
     }
 }

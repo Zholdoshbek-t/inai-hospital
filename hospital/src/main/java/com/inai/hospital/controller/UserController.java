@@ -1,5 +1,6 @@
 package com.inai.hospital.controller;
 
+import com.inai.hospital.config.rabbitmq.producers.RabbitMQUserProducer;
 import com.inai.hospital.dto.Request;
 import com.inai.hospital.dto.Response;
 import com.inai.hospital.service.UserService;
@@ -15,16 +16,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
-
+    private final RabbitMQUserProducer rabbitMQUserProducer;
 
     @PostMapping("/update")
-    public ResponseEntity<Response> updateUser(@RequestBody Request request) {
-        return ResponseEntity.ok(userService.updateUser(request));
+    public ResponseEntity<String> updateUser(@RequestBody Request request) {
+        rabbitMQUserProducer.sendMessage(request);
+
+        return ResponseEntity.ok("Запрос был успешно отправлен. Ожидайте.");
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<Response> deleteUser(@RequestBody Request request) {
-        return ResponseEntity.ok(userService.updateUser(request));
+    public ResponseEntity<String> deleteUser(@RequestBody Request request) {
+        rabbitMQUserProducer.sendMessage(request);
+
+        return ResponseEntity.ok("Запрос был успешно отправлен. Ожидайте.");
     }
 }

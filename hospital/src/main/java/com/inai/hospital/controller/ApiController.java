@@ -1,5 +1,6 @@
 package com.inai.hospital.controller;
 
+import com.inai.hospital.config.rabbitmq.producers.RabbitMQUserProducer;
 import com.inai.hospital.dto.Request;
 import com.inai.hospital.dto.Response;
 import com.inai.hospital.service.ApiService;
@@ -17,6 +18,7 @@ public class ApiController {
 
     private final ApiService apiService;
 
+    private final RabbitMQUserProducer rabbitMQUserProducer;
 
     @PostMapping("/login")
     public ResponseEntity<Response> login(@RequestBody Request request) {
@@ -24,7 +26,9 @@ public class ApiController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Response> register(@RequestBody Request request) {
-        return ResponseEntity.ok(apiService.register(request));
+    public ResponseEntity<String> register(@RequestBody Request request) {
+        rabbitMQUserProducer.sendMessage(request);
+
+        return ResponseEntity.ok("Запрос был успешно отправлен. Ожидайте.");
     }
 }

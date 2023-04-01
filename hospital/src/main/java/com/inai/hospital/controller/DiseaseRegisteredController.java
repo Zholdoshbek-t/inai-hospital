@@ -1,5 +1,6 @@
 package com.inai.hospital.controller;
 
+import com.inai.hospital.config.rabbitmq.producers.RabbitMQDiseaseRegProducer;
 import com.inai.hospital.dto.Request;
 import com.inai.hospital.dto.Response;
 import com.inai.hospital.service.DiseaseRegisteredService;
@@ -14,6 +15,7 @@ public class DiseaseRegisteredController {
 
     private final DiseaseRegisteredService diseaseRegisteredService;
 
+    private final RabbitMQDiseaseRegProducer rabbitMQDiseaseRegProducer;
 
     @GetMapping("/get-by-disease-id")
     public ResponseEntity<Response> getRegisteredDiseasesByDisease(@RequestBody Request request) {
@@ -31,27 +33,37 @@ public class DiseaseRegisteredController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Response> registerDisease(@RequestBody Request request) {
-        return ResponseEntity.ok(diseaseRegisteredService.registerDisease(request));
+    public ResponseEntity<String> registerDisease(@RequestBody Request request) {
+        rabbitMQDiseaseRegProducer.sendMessage(request);
+
+        return ResponseEntity.ok("Запрос был успешно отправлен. Ожидайте.");
     }
 
     @PostMapping("/update")
-    public ResponseEntity<Response> updateRegisteredDisease(@RequestBody Request request) {
-        return ResponseEntity.ok(diseaseRegisteredService.updateRegisteredDisease(request));
+    public ResponseEntity<String> updateRegisteredDisease(@RequestBody Request request) {
+        rabbitMQDiseaseRegProducer.sendMessage(request);
+
+        return ResponseEntity.ok("Запрос был успешно отправлен. Ожидайте.");
     }
 
     @PostMapping("/cured")
-    public ResponseEntity<Response> curedDisease(@RequestBody Request request) {
-        return ResponseEntity.ok(diseaseRegisteredService.curedDisease(request));
+    public ResponseEntity<String> curedDisease(@RequestBody Request request) {
+        rabbitMQDiseaseRegProducer.sendMessage(request);
+
+        return ResponseEntity.ok("Запрос был успешно отправлен. Ожидайте.");
     }
 
     @PostMapping("/lethal")
-    public ResponseEntity<Response> lethalDisease(@RequestBody Request request) {
-        return ResponseEntity.ok(diseaseRegisteredService.lethalDisease(request));
+    public ResponseEntity<String> lethalDisease(@RequestBody Request request) {
+        rabbitMQDiseaseRegProducer.sendMessage(request);
+
+        return ResponseEntity.ok("Запрос был успешно отправлен. Ожидайте.");
     }
 
     @PostMapping("/wrong")
-    public ResponseEntity<Response> wrongDisease(@RequestBody Request request) {
-        return ResponseEntity.ok(diseaseRegisteredService.wrongDisease(request));
+    public ResponseEntity<String> wrongDisease(@RequestBody Request request) {
+        rabbitMQDiseaseRegProducer.sendMessage(request);
+
+        return ResponseEntity.ok("Запрос был успешно отправлен. Ожидайте.");
     }
 }

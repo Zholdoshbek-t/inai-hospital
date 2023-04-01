@@ -9,11 +9,16 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Request {
+
+    private String diseaseApi;
+    private String diseaseRegisteredApi;
+    private String UserApi;
 
     private Long diseaseId;
     private String diseaseName;
