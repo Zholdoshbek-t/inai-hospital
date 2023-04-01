@@ -1,9 +1,9 @@
-package com.inai.hospital.controller;
+package com.inai.hospital.controller.hospital;
 
 import com.inai.hospital.config.rabbitmq.producers.RabbitMQUserProducer;
 import com.inai.hospital.dto.Request;
 import com.inai.hospital.dto.Response;
-import com.inai.hospital.service.PermissionService;
+import com.inai.hospital.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,42 +12,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/permissions")
+@RequestMapping("/hospital/api/roles")
 @RequiredArgsConstructor
-public class PermissionController {
+public class RoleController {
 
     private final RabbitMQUserProducer rabbitMQUserProducer;
 
     @PostMapping("/create")
-    public ResponseEntity<String> createPermission(@RequestBody Request request) {
+    public ResponseEntity<String> createRole(@RequestBody Request request) {
         rabbitMQUserProducer.sendMessage(request);
 
         return ResponseEntity.ok("Запрос был успешно отправлен. Ожидайте.");
     }
 
     @PostMapping("/update")
-    public ResponseEntity<String> updatePermission(@RequestBody Request request) {
+    public ResponseEntity<String> updateRole(@RequestBody Request request) {
         rabbitMQUserProducer.sendMessage(request);
 
         return ResponseEntity.ok("Запрос был успешно отправлен. Ожидайте.");
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<String> deletePermission(@RequestBody Request request) {
-        rabbitMQUserProducer.sendMessage(request);
-
-        return ResponseEntity.ok("Запрос был успешно отправлен. Ожидайте.");
-    }
-
-    @PostMapping("/add-to-role")
-    public ResponseEntity<String> addPermissionToRole(@RequestBody Request request) {
-        rabbitMQUserProducer.sendMessage(request);
-
-        return ResponseEntity.ok("Запрос был успешно отправлен. Ожидайте.");
-    }
-
-    @PostMapping("/delete-from-role")
-    public ResponseEntity<String> deletePermissionFromRole(@RequestBody Request request) {
+    public ResponseEntity<String> deleteRole(@RequestBody Request request) {
         rabbitMQUserProducer.sendMessage(request);
 
         return ResponseEntity.ok("Запрос был успешно отправлен. Ожидайте.");

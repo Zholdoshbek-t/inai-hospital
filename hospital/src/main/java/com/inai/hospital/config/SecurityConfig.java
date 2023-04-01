@@ -31,7 +31,7 @@ public class SecurityConfig {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/api/**")
+                .antMatchers("/hospital/api/**", "/government/main/login")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

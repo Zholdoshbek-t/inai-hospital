@@ -1,4 +1,4 @@
-package com.inai.hospital.controller;
+package com.inai.hospital.controller.hospital;
 
 import com.inai.hospital.config.rabbitmq.producers.RabbitMQDiseaseProducer;
 import com.inai.hospital.dto.Request;
@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/disease")
+@RequestMapping("/hospital/disease")
 @RequiredArgsConstructor
 public class DiseaseController {
 
